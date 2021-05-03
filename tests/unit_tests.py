@@ -9,23 +9,23 @@ import shutil
 # To fully evaluate the user test cases, this should be run in two ways:
 
 # 1. as a package
-from nispat.normative import estimate
-from nispat.normative_parallel import execute_nm, collect_nm, delete_nm
+from pcntoolkit.normative import estimate
+from pcntoolkit.normative_parallel import execute_nm, collect_nm, delete_nm
 
-# 2. by appending to the path
-#sys.path.clear()
-#sys.path.append('/home/preclineu/andmar/sfw/nispat/nispat')
+## 2. by appending to the path
+##sys.path.clear()
+#sys.path.append('/home/preclineu/andmar/sfw/PCNtoolkit/pcntoolkit')
 #from normative import estimate
 #from normative_parallel import execute_nm, collect_nm, delete_nm
 
 # ---------------- Config parameters -----------------------------------------
 
 # General config parameters
-normative_path = '/home/preclineu/andmar/sfw/nispat/nispat/normative.py'
+normative_path = '/home/preclineu/andmar/sfw/PCNtoolkit/pcntoolkit/normative.py'
 python_path='/home/preclineu/andmar/sfw/anaconda3/envs/py36/bin/python'
 data_dir = '/home/preclineu/andmar/data/nispat_unit_test_data/'
 test_dir = '/home/preclineu/andmar/py.sandbox/unittests/unit_test_results'
-alt_alg = 'blr'             # alogrithm to test in addition to GPR
+alt_alg = 'blr'             # algorithm to test in addition to GPR
 
 # cluster paramateters
 job_name = 'nm_unit_test'
@@ -52,10 +52,10 @@ def save_output(src_dir, dst_dir):
     files.extend(glob.glob(os.path.join(src_dir,'ys2*')))
     files.extend(glob.glob(os.path.join(src_dir,'Rho*')))
     files.extend(glob.glob(os.path.join(src_dir,'pRho*')))
-    files.extend(glob.glob(os.path.join(src_dir,'rmse*')))
-    files.extend(glob.glob(os.path.join(src_dir,'smse*')))
-    files.extend(glob.glob(os.path.join(src_dir,'msll*')))
-    files.extend(glob.glob(os.path.join(src_dir,'expv*')))
+    files.extend(glob.glob(os.path.join(src_dir,'RMSE*')))
+    files.extend(glob.glob(os.path.join(src_dir,'SMSE*')))
+    files.extend(glob.glob(os.path.join(src_dir,'MSLL*')))
+    files.extend(glob.glob(os.path.join(src_dir,'EXPV*')))
     files.extend(glob.glob(os.path.join(src_dir,'Hyp*')))
     files.extend(glob.glob(os.path.join(src_dir,'Models')))
     for f in files:
@@ -83,7 +83,7 @@ resp_file_nii_te = os.path.join(data_dir, 'resp_n100.nii.gz')
 cov_file_nii_te = os.path.join(data_dir, 'cov_n100.txt')
 
 estimate(cov_file_nii, resp_file_nii, maskfile=mask_file_nii, 
-         testresp = resp_file_nii_te, testcov = cov_file_nii_te)
+          testresp = resp_file_nii_te, testcov = cov_file_nii_te)
 
 print(os.getcwd())
 save_output(os.getcwd(), tdir)
@@ -104,7 +104,7 @@ resp_file_txt = os.path.join(data_dir, 'resp.txt')
 cov_file_txt = os.path.join(data_dir, 'cov.txt')
 
 estimate(cov_file_txt, resp_file_txt, testresp = resp_file_txt, 
-         testcov = cov_file_txt ,alg=alt_alg, configparam=2)
+          testcov = cov_file_txt ,alg=alt_alg, configparam=2)
 
 save_output(os.getcwd(), tdir)
 test_num, tdir = update_test_counter(test_num, test_dir)
@@ -125,7 +125,7 @@ resp_file_tr = os.path.join(data_dir,'resp_big_tr.txt')
 resp_file_te = os.path.join(data_dir,'resp_big_te.txt')
 
 estimate(cov_file_tr, resp_file_tr, testresp=resp_file_te, testcov=cov_file_te,
-         alg=alt_alg, configparam=1, savemodel='True')
+          alg=alt_alg, configparam=1, savemodel='True')
 
 save_output(os.getcwd(), tdir)
 test_num, tdir = update_test_counter(test_num, test_dir)
@@ -138,7 +138,7 @@ cov_file_par = os.path.join(data_dir, 'cov.pkl')
 bin_flag = True
 
 tdir += '/'
-execute_nm(tdir, python_path, normative_path, job_name, cov_file_par, 
+execute_nm(tdir, python_path, job_name, cov_file_par, 
            resp_file_par, batch_size, memory, duration, cluster_spec=cluster, 
            cv_folds=2, log_path=tdir, binary=bin_flag)
 
